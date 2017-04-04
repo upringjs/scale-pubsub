@@ -1,5 +1,5 @@
 {
-  "name": "presentation-the-cost-of-logging",
+  "name": "presentation-scale-pubsub",
   "version": "0.0.0",
   "dependencies": {
     "bespoke-run": "^1.0.1",
