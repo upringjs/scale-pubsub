@@ -19,39 +19,18 @@ html
               img(src="./images/nearform.svg")
           h3(style='color: white') by&nbsp;
             a(style="display:inline-block;margin-left: -.03em; color: white",href="http://twitter.com/matteocollina") @matteocollina
-          h3(style='margin-left:.15em;margin-top: -1em;color:white') &&nbsp;&nbsp;
-            a(style="display:inline-block;margin-left: -.03em; color: white",href="http://twitter.com/lucamaraschi") @lucamaraschi
-
-      section(data-bespoke-backdrop='onceuponatime').trans
-
-      section(data-bespoke-backdrop='monolith2').trans
 
       section
-        // h2 Stateless Architecture
-        img(src='images/arch-generic.png' style='height: 90%')
+        img(src='images/upring.svg' style='width: 90%')
+
+      section
+        h2 DEMO KV
+        a(href="https://github.com/upringjs/upring-demos") https://github.com/upringjs/upring-demos
 
       section(data-bespoke-backdrop='baloons').trans
         h2(style='color:white') How can we support
           br
           | live-updates to our users?
-
-      section
-        h2 WebSocket!
-        h3 but then our application became stateful
-
-      section
-        h3 Round-Robin Load Balancing
-        img(src='images/loadbalacing.png' style='width: 90%')
-
-      section
-        h3 Round-Robin Load Balancing
-        img(src="./images/no-caching.png", style="width: 120%")
-
-      section(data-bespoke-backdrop='foxes').transgray
-        h2(style="color: white")
-          | Any local state is unfeasible
-          br
-          | as the load is shared
 
       section(data-bespoke-backdrop='foxes').transgray
         h2(style="color: white")
@@ -67,47 +46,8 @@ html
         // Given a request referencing data X, we must always route it to peer Y.
 
       section
-        h3 How do we assign users to servers?
+        h3 How do we assign data to servers?
         img(src='images/sharding.png' style='height: 80%')
-
-      section
-        h2 What if the topology changes?
-
-      section(data-bespoke-backdrop='books').transgray
-        h2(style="color: white") Service Discovery
-
-      section
-        img(src="./images/consul.png" style="width: 90%")
-
-      section
-        img(src="./images/etcd.svg" style="width: 90%")
-
-      section
-        h2 Do we really need another piece of infrastructure?
-
-      section
-        h2 Failure detection
-        img(src="./images/heartbeat.png" style="width: 90%")
-        h2 by heartbeat
-
-      section
-        img(src='images/serf.png' style='height: 90%')
-        h2 But it's still more software runnning..
-
-      section
-        img(src="./images/unfeasible.gif")
-
-      section
-        h2 ..or is it?
-
-      section
-        img(src='images/upring.svg' style='width: 90%')
-
-      section
-        h2 DEMO KV
-        a(href="https://github.com/mcollina/upring-demos") https://github.com/mcollina/upring-demos
-
-      section(data-bespoke-backdrop='magic').trans
 
       section
         h3 What happens when you read on UpRing?
@@ -118,20 +58,25 @@ html
         img(src="./images/write.png" style="height: 90%")
 
       section
-        h3 What happens when a peer dies?
-        img(src="./images/peer-dead.png" style="height: 90%")
-
-      section(data-bespoke-backdrop='dragon-scroll').trans
-        h1(style="color: white; padding-top: 50%") Secret Sauce(s)
-
-      section
         img(src='images/dynamodb.png' style='width: 90%')
 
       section
         img(src="./images/dynamo-strategy-one.png" style="height: 90%")
 
-      section()
-        img(src='images/swim.png' style='width: 90%')
+      section
+        h2 What if the topology changes?
+
+      section
+        h2 Failure detection
+        img(src="./images/heartbeat.png" style="width: 90%")
+        h2 by heartbeat
+
+      section(data-bespoke-backdrop='books').transgray
+        h3(style="color: white") How do we find the new peer?
+
+      section
+        h3 What happens when a peer dies?
+        img(src="./images/peer-dead.png" style="height: 90%")
 
       section
         ul(style='text-align: left; font-size: 3em').bullet
@@ -148,9 +93,12 @@ html
             b(style='color: red; font-style: italic;') M
             | embership protocol
 
+      section()
+        img(src='images/swim.png' style='width: 90%')
+
       section(data-bespoke-backdrop='lamp').trans
         h3(style="color: white; margin-left: auto; margin-right: 0%; width: 30%; text-align: right; padding-bottom: 5%")
-          | Let's organize our peers in a <b>consistent hashring</b>,
+          | UpRing organizes our peers in a <b>consistent hashring</b>,
           | using <b>SWIM</b> to detect failures
 
       section(data-bespoke-backdrop='magic').trans
@@ -178,20 +126,6 @@ html
             | in Raft and Paxos, you need at least 3 nodes to operate,
             | but better use 5
 
-      section
-        img(src="images/kafka.png" style="width: 90%")
-
-      section(data-bespoke-backdrop='bigdata').trans
-        h2(style="color: white; margin-top: -3em;") and we all know...Kafka -> Hadoop = Big Data
-
-      section(data-bespoke-backdrop='hipster').trans
-
-      section
-          img(src="images/kafka-architecture.png" style="height: 90%")
-
-      section
-          img(src="images/kafka-install.png" style="height: 100%")
-
       section(data-bespoke-backdrop='megaphone').transgray
         h2(style="color: white; margin-top: -3em;") so... how can we build a pub/sub system with UpRing?
 
@@ -209,99 +143,7 @@ html
 
       section
         h2 DEMO publish-subscribe
-        a(href="https://github.com/mcollina/upring-demos") https://github.com/mcollina/upring-demos
-
-      section
-        h2 API
-
-      section
-        h2 Starting upring
-        pre
-          code.language-javascript.
-            const upring = UpRing({
-              base: ['127.0.0.1:7979'],
-              logLevel: 'debug',
-              hashring: {
-                replicaPoints: 10,
-                joinTimeout: 200
-              }
-            })
-
-      section
-        h2 Adding patterns
-        pre
-          code.language-javascript.
-            upring.add('ns:kv,cmd:put', function (req, reply) {
-              db.set(req.key, req.value)
-              /* the first argument is the error
-                 the second one is the result */
-              reply(null, { ok: true })
-            })
-
-      section
-        h2 Send requests
-        pre
-          code.language-javascript.
-            upring.request({
-              ns: 'kv',
-              cmd: 'get',
-              key: 'hello'
-            }, console.log)
-
-      section
-        h2 Do live updates 1/2
-        pre
-          code.language-javascript.
-            upring.add('ns:kv,cmd:live', function (req, reply) {
-              const updates = new Readable({
-                objectMode: true,
-                read: () => {}
-              })
-              // call push whenever you want to send data
-              // se the full Readable API at nodejs.org
-              updates.push({ hello: 'world' })
-              reply(null, { streams: { updates } })
-            })
-
-      section
-        h2 Do live updates 2/2
-        pre
-          code.language-javascript.
-            upring.request({
-              ns: 'kv',
-              cmd: 'get',
-              key: 'hello'
-            }, function (err, res) {
-              res.streams.updates.on('data', console.log)
-            })
-
-      section
-        h2 Track
-        pre
-          code.language-javascript.
-            /* call upring.track(key) if you are responsible
-               for that key, i.e. if upring.allocatedToMe(key)
-               returns true */
-            const tracker = upring.track(key, { replica: true })
-            tracker.on('replica', function (peer) {
-              console.log('new replica', peer)
-            })
-            tracker.on('move', function (peer) {
-              console.log('moved to', peer)
-            })
-
-      section
-        h2 Replica
-        pre
-          code.language-javascript.
-            /* call upring.replica(key, cb) if you are not responsible
-               for that key, i.e. if upring.allocatedToMe(key)
-               returns false */
-            upring.replica(key, function () {
-              // now upring.allocateToMe(key) returns true
-            })
-
-      section(data-bespoke-backdrop='upring-events').trans
+        a(href="https://github.com/upringjs/upring-demos") https://github.com/upringjs/upring-demos
 
       section
         h3 Upring is a framework to&nbsp;
@@ -317,38 +159,38 @@ html
           li ..or anything that requires distributed state!
 
       section
-        h2 ...even your coffee in the morning!
-        h2 ...as italians, we are heavily working on it!
-
-      section
         h2 Links
         ul.bullet
           li
-            a(href="https://github.com/mcollina/upring").
-              https://github.com/mcollina/upring
+            a(href="https://github.com/upringjs/upring").
+              https://github.com/upringjs/upring
           li
-            a(href="https://github.com/mcollina/upring-kv").
-              https://github.com/mcollina/upring-kv
+            a(href="https://github.com/upringjs/upring-kv").
+              https://github.com/upringjs/upring-kv
           li
-            a(href="https://github.com/mcollina/upring-control").
-              https://github.com/mcollina/upring-control
+            a(href="https://github.com/upringjs/upring-control").
+              https://github.com/upringjs/upring-control
           li
-            a(href="https://github.com/mcollina/upring-pubsub").
-              https://github.com/mcollina/upring-pubsub
+            a(href="https://github.com/upringjs/upring-pubsub").
+              https://github.com/upringjs/upring-pubsub
 
       section
         h2 This presentation
         ul.bullet
           li
-            a(href="https://mcollina.github.io/scaling-pubsub").
-              https://mcollina.github.io/scaling-pubsub
+            a(href="https://upringjs.github.io/scale-pubsub").
+              https://upringjs.github.io/scale-pubsub
           li
-            a(href="https://github.com/mcollina/scaling-pubsub").
-              https://github.com/mcollina/scaling-pubsub
+            a(href="https://github.com/mcollina/scale-pubsub").
+              https://github.com/upringjs/scale-pubsub
 
-      section
-        h2 Soon into its own org!
-        h2 https://github.com/upring
+      // section
+      //   a(href="http://nearform.com" style="width: 80%")
+      //     img(src="./images/nearform.svg")
+      //   br
+      //   h2 We are hiring React developers!
+      //   br
+      //   h3 <a href="mailto:matteo.collina@nearform.com">matteo.collina@nearform.com</a>
 
       section
         h1 Thanks!
