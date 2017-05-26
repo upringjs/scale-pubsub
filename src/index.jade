@@ -32,6 +32,8 @@ html
           br
           | live-updates to our users?
 
+      section(data-bespoke-backdrop='foxes').trans
+
       section(data-bespoke-backdrop='foxes').transgray
         h2(style="color: white")
           | How can we know which node handle what connection?
@@ -64,19 +66,23 @@ html
         img(src="./images/dynamo-strategy-one.png" style="height: 90%")
 
       section
-        h2 What if the topology changes?
+        h2 What happens
+          br
+          | when a peer dies?
+
+      section
+        img(src="./images/read.png" style="height: 90%")
+
+      section
+        h3 What happens when a peer dies?
+        img(src="./images/peer-dead.png" style="height: 90%")
 
       section
         h2 Failure detection
         img(src="./images/heartbeat.png" style="width: 90%")
         h2 by heartbeat
 
-      section(data-bespoke-backdrop='books').transgray
-        h3(style="color: white") How do we find the new peer?
-
-      section
-        h3 What happens when a peer dies?
-        img(src="./images/peer-dead.png" style="height: 90%")
+      section(data-bespoke-backdrop='books').trans
 
       section
         ul(style='text-align: left; font-size: 3em').bullet
@@ -153,7 +159,7 @@ html
           li a key value store
           li a cache
           li a pub/sub system
-          li real-time applications
+          li a real-time application
           li a discovery system
           li a metadata store for microservices
           li ..or anything that requires distributed state!
