@@ -152,6 +152,108 @@ html
         a(href="https://github.com/upringjs/upring-demos") https://github.com/upringjs/upring-demos
 
       section
+        h2 API
+
+      section
+        h2 Starting upring
+        pre
+          code.language-javascript.
+            const upring = UpRing({
+              base: ['127.0.0.1:7979'],
+              logLevel: 'debug',
+              hashring: {
+                replicaPoints: 10,
+                joinTimeout: 200
+              }
+            })
+
+      section
+        h2 Send requests
+        pre
+          code.language-javascript.
+            upring.request({
+              ns: 'kv',
+              cmd: 'get',
+              key: 'hello'
+            }, console.log)
+
+      section
+        h2 Adding patterns
+        pre
+          code.language-javascript.
+            upring.add('ns:kv,cmd:put', function (req, reply) {
+              db.set(req.key, req.value)
+              /* the first argument is the error
+                 the second one is the result */
+              reply(null, { ok: true })
+            })
+
+      section
+        h2 Do live updates 1/2
+        pre
+          code.language-javascript.
+            upring.add('ns:kv,cmd:live', function (req, reply) {
+              const updates = new Readable({
+                objectMode: true,
+                read: () => {}
+              })
+              // call push whenever you want to send data
+              // se the full Readable API at nodejs.org
+              updates.push({ hello: 'world' })
+              reply(null, { streams: { updates } })
+            })
+
+      section
+        h2 Do live updates 2/2
+        pre
+          code.language-javascript.
+            upring.request({
+              ns: 'kv',
+              cmd: 'get',
+              key: 'hello'
+            }, function (err, res) {
+              res.streams.updates.on('data', console.log)
+            })
+
+      section
+        h2 Track
+        pre
+          code.language-javascript.
+            /* call upring.track(key) if you are responsible
+               for that key, i.e. if upring.allocatedToMe(key)
+               returns true */
+            const tracker = upring.track(key, { replica: true })
+            tracker.on('replica', function (peer) {
+              console.log('new replica', peer)
+            })
+            tracker.on('move', function (peer) {
+              console.log('moved to', peer)
+            })
+
+      section
+        h2 Replica
+        pre
+          code.language-javascript.
+            /* call upring.replica(key, cb) if you are not responsible
+               for that key, i.e. if upring.allocatedToMe(key)
+               returns false */
+            upring.replica(key, function () {
+              // now upring.allocateToMe(key) returns true
+            })
+
+      section
+        img(src="/images/pino-logo-hire.png" style="width: 90%")
+
+      section
+        pre
+          code.language-javascript.
+            const pino = require('pino')()
+            pino.info('hello world')
+            pino.debug({
+              big: 'object'
+            }, 'with message')
+
+      section
         h3 Upring is a framework to&nbsp;
           b build
 
@@ -190,13 +292,13 @@ html
             a(href="https://github.com/mcollina/scale-pubsub").
               https://github.com/upringjs/scale-pubsub
 
-      // section
-      //   a(href="http://nearform.com" style="width: 80%")
-      //     img(src="./images/nearform.svg")
-      //   br
-      //   h2 We are hiring React developers!
-      //   br
-      //   h3 <a href="mailto:matteo.collina@nearform.com">matteo.collina@nearform.com</a>
+      section
+        a(href="http://nearform.com" style="width: 80%")
+          img(src="./images/nearform.svg")
+        br
+        h2 We are hiring JS developers!
+        br
+        h2 <a href="http://www.nearform.com/careers/">www.nearform.com/careers</a>
 
       section
         h1 Thanks!
