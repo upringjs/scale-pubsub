@@ -112,6 +112,98 @@
         <h2>DEMO publish-subscribe</h2><a href="https://github.com/upringjs/upring-demos">https://github.com/upringjs/upring-demos</a>
       </section>
       <section>
+        <h2>API</h2>
+      </section>
+      <section>
+        <h2>Starting upring</h2>
+        <pre><code class="language-javascript">const upring = UpRing({
+  base: ['127.0.0.1:7979'],
+  logLevel: 'debug',
+  hashring: {
+    replicaPoints: 10,
+    joinTimeout: 200
+  }
+})
+</code></pre>
+      </section>
+      <section>
+        <h2>Send requests</h2>
+        <pre><code class="language-javascript">upring.request({
+  ns: 'kv',
+  cmd: 'get',
+  key: 'hello'
+}, console.log)
+</code></pre>
+      </section>
+      <section>
+        <h2>Adding patterns</h2>
+        <pre><code class="language-javascript">upring.add('ns:kv,cmd:put', function (req, reply) {
+  db.set(req.key, req.value)
+  /* the first argument is the error
+     the second one is the result */
+  reply(null, { ok: true })
+})
+</code></pre>
+      </section>
+      <section>
+        <h2>Do live updates 1/2</h2>
+        <pre><code class="language-javascript">upring.add('ns:kv,cmd:live', function (req, reply) {
+  const updates = new Readable({
+    objectMode: true,
+    read: () => {}
+  })
+  // call push whenever you want to send data
+  // se the full Readable API at nodejs.org
+  updates.push({ hello: 'world' })
+  reply(null, { streams: { updates } })
+})
+</code></pre>
+      </section>
+      <section>
+        <h2>Do live updates 2/2</h2>
+        <pre><code class="language-javascript">upring.request({
+  ns: 'kv',
+  cmd: 'get',
+  key: 'hello'
+}, function (err, res) {
+  res.streams.updates.on('data', console.log)
+})
+</code></pre>
+      </section>
+      <section>
+        <h2>Track</h2>
+        <pre><code class="language-javascript">/* call upring.track(key) if you are responsible
+   for that key, i.e. if upring.allocatedToMe(key)
+   returns true */
+const tracker = upring.track(key, { replica: true })
+tracker.on('replica', function (peer) {
+  console.log('new replica', peer)
+})
+tracker.on('move', function (peer) {
+  console.log('moved to', peer)
+})
+</code></pre>
+      </section>
+      <section>
+        <h2>Replica</h2>
+        <pre><code class="language-javascript">/* call upring.replica(key, cb) if you are not responsible
+   for that key, i.e. if upring.allocatedToMe(key)
+   returns false */
+upring.replica(key, function () {
+  // now upring.allocateToMe(key) returns true
+})
+</code></pre>
+      </section>
+      <section><img src="/images/pino-logo-hire.png" style="width: 90%"></section>
+      <section>
+        <pre><code class="language-javascript">const pino = require('pino')()
+pino.info('hello world')
+pino.debug({
+  big: 'object'
+}, 'with message')
+</code></pre>
+      </section>
+      <section>
         <h3>Upring is a framework to&nbsp;<b>build</b></h3>
         <ul class="bullet">
           <li>a key value store</li>
@@ -143,13 +235,10 @@
               </a></li>
         </ul>
       </section>
-      <!-- section-->
-      <!--   a(href="http://nearform.com" style="width: 80%")-->
-      <!--     img(src="./images/nearform.svg")-->
-      <!--   br-->
-      <!--   h2 We are hiring React developers!-->
-      <!--   br-->
-      <!--   h3 <a href="mailto:matteo.collina@nearform.com">matteo.collina@nearform.com</a>-->
+      <section><a href="http://nearform.com" style="width: 80%"><img src="./images/nearform.svg"></a><br>
+        <h2>We are hiring JS developers!</h2><br>
+        <h2><a href="http://www.nearform.com/careers/">www.nearform.com/careers</a></h2>
+      </section>
       <section>
         <h1>Thanks!</h1><a href="http://nearform.com" style="width: 20%"><img src="./images/nearform.svg"></a><br>
         <h3><a href="mailto:matteo.collina@nearform.com">matteo.collina@nearform.com</a></h3>
